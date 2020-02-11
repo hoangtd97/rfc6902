@@ -26,12 +26,12 @@ Everything Else, which is pretty much just what JSON substantially
 differentiates between.
 */
 
-export interface AddOperation     { op: 'add',     path: string, value: any    }
-export interface RemoveOperation  { op: 'remove',  path: string                }
-export interface ReplaceOperation { op: 'replace', path: string, value: any    }
-export interface MoveOperation    { op: 'move',    from: string, path: string  }
-export interface CopyOperation    { op: 'copy',    from: string, path: string  }
-export interface TestOperation    { op: 'test',    path: string, value: any    }
+export interface AddOperation { op: 'add', path: string, value: any }
+export interface RemoveOperation { op: 'remove', path: string }
+export interface ReplaceOperation { op: 'replace', path: string, value: any, oldValue: any }
+export interface MoveOperation { op: 'move', from: string, path: string }
+export interface CopyOperation { op: 'copy', from: string, path: string }
+export interface TestOperation { op: 'test', path: string, value: any }
 
 export type Operation = AddOperation |
                         RemoveOperation |
@@ -297,7 +297,7 @@ export function diffObjects(input: any, output: any, ptr: Pointer, diff: Diff = 
 
 export function diffValues(input: any, output: any, ptr: Pointer): Operation[] {
   if (!compare(input, output)) {
-    return [{op: 'replace', path: ptr.toString(), value: output}]
+    return [{op: 'replace', path: ptr.toString(), oldValue: input, value: output}]
   }
   return []
 }
